@@ -1,0 +1,19 @@
+{
+    "contractNumber": "CTR-2024-001",
+    "customerName": "Juan Pérez García",
+    "premium": 1600.00,
+    "currency": "USD",
+    "coverage": {
+        "type": "Comprehensive",
+        "limit": 500000,
+        "deductible": 500
+    },
+    "startDate": "2024-01-01",
+    "endDate": "2025-12-31",
+    "status": "Active",
+    "agent": {
+        "name": "María García",
+        "id": "AGT-456"
+    },
+    "renewalDate": "2025-01-01"
+}
