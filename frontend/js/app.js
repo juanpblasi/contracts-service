@@ -2,8 +2,10 @@
  * Main Application Controller
  */
 
-// API Configuration
-const API_BASE_URL = 'http://localhost:5001/api';
+// API Configuration - compatible with both local and Vercel
+const API_BASE_URL = window.location.hostname === 'localhost'
+    ? 'http://localhost:5001/api'
+    : '/api';
 
 // Application State
 const AppState = {

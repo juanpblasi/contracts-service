@@ -1,3 +1,6 @@
+# Vercel deployment
+.vercel
+
 # Python
 __pycache__/
 *.py[cod]
