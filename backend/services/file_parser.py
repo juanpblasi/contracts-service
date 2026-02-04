@@ -97,7 +97,10 @@ class FileParser:
     @staticmethod
     def parse_txt(filepath):
         """
-        Parse text file to dictionary (assumes key:value format)
+        Parse text file to dictionary
+        Supports two formats:
+        1. key:value format (e.g., "name: John")
+        2. Line-by-line content (each line becomes "line_N: content")
         
         Args:
             filepath: Path to text file
@@ -106,12 +109,35 @@ class FileParser:
             dict: Parsed data
         """
         data = {}
+        line_number = 1
+        has_key_value_pairs = False
+        
         with open(filepath, 'r', encoding='utf-8') as f:
-            for line in f:
+            lines = f.readlines()
+        
+        # First pass: check if file has key:value format
+        for line in lines:
+            line = line.strip()
+            if line and ':' in line:
+                has_key_value_pairs = True
+                break
+        
+        # Parse based on detected format
+        if has_key_value_pairs:
+            # Parse as key:value format
+            for line in lines:
                 line = line.strip()
                 if ':' in line:
                     key, value = line.split(':', 1)
                     data[key.strip()] = value.strip()
+        else:
+            # Parse as line-by-line content
+            for line in lines:
+                line = line.strip()
+                if line:  # Skip empty lines
+                    data[f'line_{line_number}'] = line
+                    line_number += 1
+        
         return data
     
     @classmethod

@@ -4,12 +4,16 @@ Contract Comparison Service
 """
 import os
 import logging
-from flask import Flask
+from pathlib import Path
+from flask import Flask, send_from_directory
 from flask_cors import CORS
 
 from config import get_config
 from api.routes import api_bp
 from utils.helpers import ensure_directory_exists
+
+# Base directory
+BASE_DIR = Path(__file__).parent.parent
 
 # Get configuration
 config = get_config()
@@ -52,9 +56,22 @@ def create_app(config_name=None):
     # Register blueprints
     app.register_blueprint(api_bp, url_prefix=config.API_PREFIX)
     
-    # Root endpoint
+    # Frontend static files directory
+    frontend_dir = BASE_DIR / 'frontend'
+    
+    # Serve frontend
     @app.route('/')
     def index():
+        return send_from_directory(frontend_dir, 'index.html')
+    
+    # Serve static files (CSS, JS)
+    @app.route('/<path:path>')
+    def serve_static(path):
+        return send_from_directory(frontend_dir, path)
+    
+    # API info endpoint
+    @app.route('/info')
+    def api_info():
         return {
             'service': 'Contract Comparison Service',
             'version': '1.0.0',

@@ -68,25 +68,120 @@ No requiere instalación adicional. Solo abrir `frontend/index.html` en un naveg
 
 ## 🚀 Uso
 
-### 1. Iniciar el Backend
+### Paso 1: Instalar Dependencias del Backend
 
 ```bash
+# Navegar al directorio backend
 cd backend
-python app.py
+
+# Crear entorno virtual (solo la primera vez)
+python3 -m venv venv
+
+# Activar entorno virtual
+source venv/bin/activate
+
+# Instalar dependencias
+pip install -r requirements.txt
 ```
 
-El servidor estará disponible en: `http://localhost:5000`
+### Paso 2: Iniciar el Servidor
 
-### 2. Abrir el Dashboard
+```bash
+# Desde el directorio backend con el entorno virtual activado
+python3 app.py
+```
 
-Abrir `frontend/index.html` en un navegador web.
+Por defecto, el servidor intentará usar el puerto **5000**. Si ese puerto está ocupado (común en macOS por AirPlay Receiver), usa un puerto alternativo:
 
-### 3. Comparar Contratos
+```bash
+PORT=5001 python3 app.py
+```
 
-1. **Cargar Archivos**: Arrastra o selecciona dos archivos con la misma estructura
-2. **Comparar**: Click en "Comparar Contratos"
-3. **Revisar Resultados**: Ver el reporte detallado con estadísticas
-4. **Exportar**: Descargar el reporte en JSON o HTML
+Verás un mensaje como:
+```
+Contract Comparison Service initialized
+ * Running on http://127.0.0.1:5001
+```
+
+### Paso 3: Abrir el Dashboard
+
+El servidor ahora sirve automáticamente el frontend. Simplemente abre tu navegador y ve a:
+
+```
+http://localhost:5001/
+```
+
+(O el puerto que hayas configurado)
+
+### Paso 4: Comparar Contratos
+
+1. **Cargar Archivos**: 
+   - Arrastra o haz clic en las áreas "Documento 1" y "Documento 2"
+   - Selecciona dos archivos con la misma estructura
+   - Formatos soportados: JSON, CSV, Excel, TXT
+
+2. **Iniciar Comparación**: 
+   - Haz clic en el botón **"🔍 COMPARAR CONTRATOS"**
+   - Espera unos segundos mientras se procesa
+
+3. **Revisar Resultados**: 
+   - Ver el **Resumen Ejecutivo** con estadísticas clave
+   - Explorar las tablas de **Diferencias**, **Coincidencias**, y **Campos Únicos**
+   - Revisar el porcentaje de coincidencia
+
+4. **Exportar Reporte** (opcional):
+   - Descargar como **JSON** para procesamiento adicional
+   - Descargar como **HTML** para compartir o archivar
+
+### Archivos de Ejemplo
+
+El proyecto incluye archivos de prueba en la carpeta `samples/`:
+- `contract1.json` - Contrato original
+- `contract2.json` - Contrato modificado
+
+Prueba el sistema con estos archivos para ver todas las funcionalidades.
+
+---
+
+## 🔧 Solución de Problemas
+
+### Puerto en Uso
+
+Si ves el error: `Address already in use` o `Port 5000 is in use`:
+
+**Opción 1: Usar otro puerto**
+```bash
+PORT=5001 python3 app.py
+```
+
+**Opción 2: Detener el proceso en el puerto**
+```bash
+# Ver qué está usando el puerto 5000
+lsof -i:5000
+
+# Matar el proceso
+lsof -ti:5000 | xargs kill -9
+```
+
+**Opción 3: Desactivar AirPlay Receiver (macOS)**
+1. Abre **Configuración del Sistema** (System Settings)
+2. Busca **General** → **AirPlay & Handoff**
+3. Desactiva **AirPlay Receiver**
+
+### El Frontend no Carga
+
+Si el dashboard no aparece en `http://localhost:5001/`:
+1. Verifica que el servidor esté corriendo (revisa la terminal)
+2. Asegúrate de estar usando el puerto correcto
+3. Prueba refrescar el navegador con `Cmd + Shift + R` (macOS) o `Ctrl + Shift + R` (Windows/Linux)
+
+### Error al Comparar Archivos
+
+Si la comparación falla:
+1. Verifica que ambos archivos tengan el mismo formato
+2. Revisa que los archivos sean válidos (JSON bien formado, CSV con headers, etc.)
+3. Verifica el tamaño (máximo 50MB por archivo)
+4. Revisa la consola del navegador (F12) para detalles del error
 
 ## 📊 Formatos Soportados
 
